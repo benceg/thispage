@@ -1,5 +1,7 @@
-node_modules
 .DS_STORE
 thumbs.db
-index.min.js
+node_modules
 npm-debug.log
+/index.js
+/index.min.js
+/index.html
