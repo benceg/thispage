@@ -1,13 +1,13 @@
 {
   "name": "this-page",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "The tiny, flexible, chainable switchboard library for server-rendered pages.",
   "main": "index.js",
   "scripts": {
-    "build": "babel --presets es2015 ./src/index.js --out-file ./index.js",
-    "build-umd": "babel --presets es2015 --plugins transform-es2015-modules-umd ./src/index.js --out-file ./index.js",
-    "watch": "babel --watch --presets es2015 ./src/index.js --out-file ./index.js",
-    "watch-umd": "babel --watch --presets es2015 --plugins transform-es2015-modules-umd ./src/index.js --out-file ./index.js",
+    "build": "./node_modules/.bin/babel --presets es2015 ./src/index.js --out-file ./index.js",
+    "build-umd": "./node_modules/.bin/babel --presets es2015 --plugins transform-es2015-modules-umd ./src/index.js --out-file ./index.js",
+    "watch": "./node_modules/.bin/babel --watch --presets es2015 ./src/index.js --out-file ./index.js",
+    "watch-umd": "./node_modules/.bin/babel --watch --presets es2015 --plugins transform-es2015-modules-umd ./src/index.js --out-file ./index.js",
     "preminify": "npm run build",
     "minify": "uglifyjs --compress --mangle -- index.js | gzip-size | pretty-bytes",
     "postinstall": "npm run build"
