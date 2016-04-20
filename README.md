@@ -4,7 +4,7 @@
 
 ## The tiny, flexible, chainable switchboard library for server-rendered pages.
 
-Dependency-free and built with ES2015. Made for browser use only.
+Tiny (~0.5KB minified & gzipped), dependency-free and built with ES2015. Made for browser use only.
 
 ---
 
@@ -61,7 +61,7 @@ This is because functions are added to the `DOMContentLoaded` event bus and dupl
 - Accepts a single pageNode argument, which defaults to `'body'`.
 - All `has` and `hasNot` calls are determined from inside the pageNode, _not_ the document element by default.
 
-#### Example
+#### Example 1
 
 ```html
 <body class="single"></body>
@@ -69,6 +69,16 @@ This is because functions are added to the `DOMContentLoaded` event bus and dupl
 
 ```js
 thisPage().is('single').end() // true
+```
+
+#### Example 2
+
+```html
+<html class="touch-enabled"></html>
+```
+
+```js
+thisPage('html').is('touch-enabled').end() // true
 ```
 
 ---

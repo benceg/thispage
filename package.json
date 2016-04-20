@@ -1,6 +1,6 @@
 {
   "name": "this-page",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "The tiny, flexible, chainable switchboard library for server-rendered pages.",
   "main": "index.js",
   "scripts": {
