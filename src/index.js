@@ -4,8 +4,7 @@
  * @returns {boolean}
  */
 function hasClass(classNames = [], test) {
-  if (!Array.isArray(classNames) || typeof test !== 'string') return false
-  return (classNames.filter(i => (i === test)).length > 0)
+  return (!Array.isArray(classNames) || typeof test !== 'string') ? false : (classNames.filter(i => (i === test)).length > 0)
 }
 
 /**
@@ -13,77 +12,70 @@ function hasClass(classNames = [], test) {
  * @returns {boolean}
  */
 function hasElement(test) {
-  if (typeof test !== 'string') return false
-  return (document.querySelectorAll(test).length > 0)
+  return (typeof test !== 'string') ? false : (document.querySelectorAll(test).length > 0)
 }
 
 /**
  * @class Page
  * @param {string} - A DOM string signifying the pageNode against which to check CSS classes.
  */
-export default class ThisPage {
+const thisPageObj = {
 
-  /**
-   * @param {string} pageNode - the DOM node to test is and isNot against.
-   */
-  constructor(pageNode = 'body') {
-    this.reset(pageNode)
-  }
+  isSelected: true,
 
   /**
    * @param {string} cssClass - A class against which to test the pageNode's class.
    * @returns {ThisPage}
    */
-  is(cssClass) {
-    this.isSelected = hasClass(this.cssClasses, cssClass)
+  is: function(cssClass) {
+    this.isSelected = (this.isSelected === false) ? false : hasClass(this.cssClasses, cssClass)
     return this
-  }
+  },
 
   /**
    * @param {string} cssClass - A class against which to test the pageNode's class.
    * @returns {ThisPage}
    */
-  isNot(cssClass) {
-    this.isSelected = !hasClass(this.cssClasses, cssClass)
+  isNot: function(cssClass) {
+    this.isSelected = (this.isSelected === false) ? false : !hasClass(this.cssClasses, cssClass)
     return this
-  }
+  },
 
   /**
    * @param {string} selector - A CSS selector to pass to querySelectorAll to test for matches.
    * @returns {ThisPage}
    */
-  has(selector) {
-    this.isSelected = hasElement(selector)
+  has: function(selector) {
+    this.isSelected = (this.isSelected === false) ? false : hasElement(selector)
     return this
-  }
+  },
 
   /**
    * @param {string} selector - A CSS selector to pass to querySelectorAll to test for matches.
    * @returns {ThisPage}
    */
-  hasNot(selector) {
-    this.isSelected = !hasElement(selector)
+  hasNot: function(selector) {
+    this.isSelected = (this.isSelected === false) ? false : !hasElement(selector)
     return this
-  }
+  },
 
   /**
    * @param {Function} callback - A callback function to execute.
    * @returns {ThisPage}
    */
-  run(callback) {
+  run: function(callback) {
     if (this.isSelected === true) document.addEventListener('DOMContentLoaded', callback)
     return this
+  },
+
+  end: function() {
+    return this.isSelected
   }
 
-  /**
-   * @param {Function} pageNode - A callback function to execute.
-   * @returns {ThisPage}
-   */
-  reset(pageNode) {
-    this.pageNode = pageNode || this.pageNode || 'body'
-    this.isSelected = true
-    this.cssClasses = document.querySelector(this.pageNode).className.split(' ')
-    return this
-  }
+}
 
+export default function thisPage(selector = 'body') {
+  const pageNode = document.querySelector(selector)
+  const cssClasses = pageNode.className.trim().split(' ')
+  return Object.assign({ pageNode, cssClasses }, thisPageObj)
 }

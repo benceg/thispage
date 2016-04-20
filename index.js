@@ -16,30 +16,21 @@
   Object.defineProperty(exports, "__esModule", {
     value: true
   });
+  exports.default = thisPage;
 
-  function _classCallCheck(instance, Constructor) {
-    if (!(instance instanceof Constructor)) {
-      throw new TypeError("Cannot call a class as a function");
-    }
-  }
+  var _extends = Object.assign || function (target) {
+    for (var i = 1; i < arguments.length; i++) {
+      var source = arguments[i];
 
-  var _createClass = function () {
-    function defineProperties(target, props) {
-      for (var i = 0; i < props.length; i++) {
-        var descriptor = props[i];
-        descriptor.enumerable = descriptor.enumerable || false;
-        descriptor.configurable = true;
-        if ("value" in descriptor) descriptor.writable = true;
-        Object.defineProperty(target, descriptor.key, descriptor);
+      for (var key in source) {
+        if (Object.prototype.hasOwnProperty.call(source, key)) {
+          target[key] = source[key];
+        }
       }
     }
 
-    return function (Constructor, protoProps, staticProps) {
-      if (protoProps) defineProperties(Constructor.prototype, protoProps);
-      if (staticProps) defineProperties(Constructor, staticProps);
-      return Constructor;
-    };
-  }();
+    return target;
+  };
 
   /**
    * @param {Array} classNames - The pageNode's classNames.
@@ -50,8 +41,7 @@
     var classNames = arguments.length <= 0 || arguments[0] === undefined ? [] : arguments[0];
     var test = arguments[1];
 
-    if (!Array.isArray(classNames) || typeof test !== 'string') return false;
-    return classNames.filter(function (i) {
+    return !Array.isArray(classNames) || typeof test !== 'string' ? false : classNames.filter(function (i) {
       return i === test;
     }).length > 0;
   }
@@ -61,77 +51,73 @@
    * @returns {boolean}
    */
   function hasElement(test) {
-    if (typeof test !== 'string') return false;
-    return document.querySelectorAll(test).length > 0;
+    return typeof test !== 'string' ? false : document.querySelectorAll(test).length > 0;
   }
 
   /**
    * @class Page
    * @param {string} - A DOM string signifying the pageNode against which to check CSS classes.
    */
+  var thisPageObj = {
 
-  var ThisPage = function () {
-
-    /**
-     * @param {string} pageNode - the DOM node to test is and isNot against.
-     */
-
-    function ThisPage() {
-      var pageNode = arguments.length <= 0 || arguments[0] === undefined ? 'body' : arguments[0];
-
-      _classCallCheck(this, ThisPage);
-
-      this.reset(pageNode);
-    }
+    isSelected: true,
 
     /**
      * @param {string} cssClass - A class against which to test the pageNode's class.
      * @returns {ThisPage}
      */
+    is: function is(cssClass) {
+      this.isSelected = this.isSelected === false ? false : hasClass(this.cssClasses, cssClass);
+      return this;
+    },
 
+    /**
+     * @param {string} cssClass - A class against which to test the pageNode's class.
+     * @returns {ThisPage}
+     */
+    isNot: function isNot(cssClass) {
+      this.isSelected = this.isSelected === false ? false : !hasClass(this.cssClasses, cssClass);
+      return this;
+    },
 
-    _createClass(ThisPage, [{
-      key: 'is',
-      value: function is(cssClass) {
-        this.isSelected = hasClass(this.cssClasses, cssClass);
-        return this;
-      }
-    }, {
-      key: 'isNot',
-      value: function isNot(cssClass) {
-        this.isSelected = !hasClass(this.cssClasses, cssClass);
-        return this;
-      }
-    }, {
-      key: 'has',
-      value: function has(selector) {
-        this.isSelected = hasElement(selector);
-        return this;
-      }
-    }, {
-      key: 'hasNot',
-      value: function hasNot(selector) {
-        this.isSelected = !hasElement(selector);
-        return this;
-      }
-    }, {
-      key: 'run',
-      value: function run(callback) {
-        if (this.isSelected === true) document.addEventListener('DOMContentLoaded', callback);
-        return this;
-      }
-    }, {
-      key: 'reset',
-      value: function reset(pageNode) {
-        this.pageNode = pageNode || this.pageNode || 'body';
-        this.isSelected = true;
-        this.cssClasses = document.querySelector(this.pageNode).className.split(' ');
-        return this;
-      }
-    }]);
+    /**
+     * @param {string} selector - A CSS selector to pass to querySelectorAll to test for matches.
+     * @returns {ThisPage}
+     */
+    has: function has(selector) {
+      this.isSelected = this.isSelected === false ? false : hasElement(selector);
+      return this;
+    },
 
-    return ThisPage;
-  }();
+    /**
+     * @param {string} selector - A CSS selector to pass to querySelectorAll to test for matches.
+     * @returns {ThisPage}
+     */
+    hasNot: function hasNot(selector) {
+      this.isSelected = this.isSelected === false ? false : !hasElement(selector);
+      return this;
+    },
 
-  exports.default = ThisPage;
+    /**
+     * @param {Function} callback - A callback function to execute.
+     * @returns {ThisPage}
+     */
+    run: function run(callback) {
+      if (this.isSelected === true) document.addEventListener('DOMContentLoaded', callback);
+      return this;
+    },
+
+    end: function end() {
+      return this.isSelected;
+    }
+
+  };
+
+  function thisPage() {
+    var selector = arguments.length <= 0 || arguments[0] === undefined ? 'body' : arguments[0];
+
+    var pageNode = document.querySelector(selector);
+    var cssClasses = pageNode.className.trim().split(' ');
+    return _extends({ pageNode: pageNode, cssClasses: cssClasses }, thisPageObj);
+  }
 });
