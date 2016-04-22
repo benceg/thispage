@@ -4,7 +4,7 @@
 
 ## The tiny, flexible, chainable switchboard library for server-rendered pages.
 
-Tiny (~0.5KB minified & gzipped), dependency-free and built with ES2015. Made for browser use only.
+Tiny (~0.5KB minified & gzipped), dependency-free and built with ES2015. For browser use only.
 
 ---
 
@@ -14,7 +14,7 @@ Tiny (~0.5KB minified & gzipped), dependency-free and built with ES2015. Made fo
 
 `this-page` is ideal for CMS-driven websites. It is declarative and chainable and allows you to determine, in a very granular way, what JavaScript to run on any given page of your site.
 
-It does so by checking CSS classes assigned to an element of your choice, and/or by looking up _any_ elements that may or may not be in the page's DOM. You can chain the functions `is`, `isNot`, `has`, `hasNot`, `run` and `reset` indefinitely to produce a clean, easy to reason about switchboard for calling JavaScript functions throughout your site.
+It does so by checking CSS classes assigned to an element of your choice, and/or by looking up _any_ elements that may or may not be in the page's DOM. You can chain the functions `is`, `isNot`, `has`, `hasNot` and `run` indefinitely to produce a clean, easy to reason about switchboard for calling JavaScript functions throughout your site.
 
 When chained with the `run` command, thisPage will add a listener to the `DOMContentLoaded` event and run any callback(s) you pass to it. Think of it as `$(document).ready()` on steroids. When not chained with `run`, it will tell you whether the current page matches the criteria given to it.
 
